@@ -1,0 +1,648 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     21634,        639]
+NotebookOptionsPosition[     20919,        610]
+NotebookOutlinePosition[     21278,        626]
+CellTagsIndexPosition[     21235,        623]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Analysis of the network topology for various light-harvesting complexes\
+\>", "Section",
+ CellChangeTimes->{{3.523965033888715*^9, 3.523965057143674*^9}}],
+
+Cell[TextData[StyleBox["Questions to ask:\n\t1. Cluster size and network \
+shape (cluster-size distribution [CSD] and radial distribution function \
+[RDF])\n\t2. J-like/H-like pair matters...\n\t3. Relate issues above to \
+physical pictures (Say the relation to dipole strength)",
+ FontSize->16]], "Text",
+ CellChangeTimes->{{3.523965065606575*^9, 3.523965217658718*^9}, {
+  3.523965373536852*^9, 3.5239654203089237`*^9}, {3.523965774703223*^9, 
+  3.523965776394168*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Cluster-size distribution by varying the interaction cut-off\
+\>", "Section",
+ CellChangeTimes->{{3.523960450606035*^9, 3.5239604740083323`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ds3z2BHW", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg2BHWdata", ",", "d2BHWdata", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", 
+  RowBox[{"ds3p", ",", "ds3m", ",", "ds3a"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3p", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3p", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z2BHW", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "1", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3m", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3m", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z2BHW", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "2", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3a", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3a", "[", "k", "]"}], "=", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{
+      RowBox[{"ds3z2BHW", "\[LeftDoubleBracket]", 
+       RowBox[{"k", ",", "2"}], "\[RightDoubleBracket]"}], ",", "2"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterp2BHW", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterp2BHW", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3p", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterm2BHW", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterm2BHW", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3m", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clustera2BHW", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clustera2BHW", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3a", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.523960651612481*^9, 3.523960693043477*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ds3z1JB0", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg1JB0data", ",", "d1JB0data", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", 
+  RowBox[{"ds3p", ",", "ds3m", ",", "ds3a"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3p", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3p", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z1JB0", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "1", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3m", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3m", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z1JB0", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "2", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3a", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3a", "[", "k", "]"}], "=", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{
+      RowBox[{"ds3z1JB0", "\[LeftDoubleBracket]", 
+       RowBox[{"k", ",", "2"}], "\[RightDoubleBracket]"}], ",", "2"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterp1JB0", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterp1JB0", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3p", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterm1JB0", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterm1JB0", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3m", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clustera1JB0", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clustera1JB0", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3a", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.523960716405353*^9, 3.523960781968047*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ds3z1RWT", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg1RWTdata", ",", "d1RWTdata", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", 
+  RowBox[{"ds3p", ",", "ds3m", ",", "ds3a"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3p", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3p", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z1RWT", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "1", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3m", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3m", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z1RWT", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "2", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3a", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3a", "[", "k", "]"}], "=", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{
+      RowBox[{"ds3z1RWT", "\[LeftDoubleBracket]", 
+       RowBox[{"k", ",", "2"}], "\[RightDoubleBracket]"}], ",", "2"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterp1RWT", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterp1RWT", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3p", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterm1RWT", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterm1RWT", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3m", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clustera1RWT", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clustera1RWT", "[", "k", "]"}], "=", 
+    RowBox[{"Gather", "[", 
+     RowBox[{
+      RowBox[{"ds3a", "[", "k", "]"}], ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "@", 
+         RowBox[{"Intersection", "[", 
+          RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], "]"}]}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.5239608078599253`*^9, 3.523960841186693*^9}}],
+
+Cell[BoxData["$Aborted"], "Output",
+ CellChangeTimes->{3.523971704433876*^9}]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ds3z3ARC", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg3ARCdata", ",", "d3ARCdata", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Clear", "[", 
+  RowBox[{"ds3p", ",", "ds3m", ",", "ds3a"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3p", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3p", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z3ARC", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "1", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3m", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3m", "[", "k", "]"}], "=", 
+    RowBox[{"ds3z3ARC", "\[LeftDoubleBracket]", 
+     RowBox[{"k", ",", "2", ",", "2", ",", "1"}], 
+     "\[RightDoubleBracket]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3a", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"ds3a", "[", "k", "]"}], "=", 
+    RowBox[{"Flatten", "[", 
+     RowBox[{
+      RowBox[{"ds3z3ARC", "\[LeftDoubleBracket]", 
+       RowBox[{"k", ",", "2"}], "\[RightDoubleBracket]"}], ",", "2"}], 
+     "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nest", "[", "x_", "]"}], ":=", 
+  RowBox[{"Union", "@@@", 
+   RowBox[{"Gather", "[", 
+    RowBox[{"x", ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Length", "@", 
+        RowBox[{"Intersection", "[", 
+         RowBox[{"#1", ",", "#2"}], "]"}]}], ">", "0"}], "&"}]}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterp3ARC", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterp3ARC", "[", "k", "]"}], "=", 
+    RowBox[{"Nest", "[", 
+     RowBox[{"nest", ",", 
+      RowBox[{"ds3p", "[", "k", "]"}], ",", "5"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clusterm3ARC", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clusterm3ARC", "[", "k", "]"}], "=", 
+    RowBox[{"Nest", "[", 
+     RowBox[{"nest", ",", 
+      RowBox[{"ds3m", "[", "k", "]"}], ",", "5"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"clustera3ARC", "[", "k_", "]"}], ":=", 
+   RowBox[{
+    RowBox[{"clustera3ARC", "[", "k", "]"}], "=", 
+    RowBox[{"Nest", "[", 
+     RowBox[{"nest", ",", 
+      RowBox[{"ds3a", "[", "k", "]"}], ",", "5"}], "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"ParallelTable", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"x", ",", 
+      RowBox[{"Length", "@", 
+       RowBox[{"clustera3ARC", "[", "x", "]"}]}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "1.", ",", "300.", ",", "1"}], "}"}]}], "]"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ListPlot", "[", 
+  RowBox[{
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"(", 
+        RowBox[{"Mean", "[", 
+         RowBox[{"Length", "/@", 
+          RowBox[{"clustera3ARC", "[", "x", "]"}]}], "]"}], ")"}]}], "}"}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "1.", ",", "300.", ",", "1"}], "}"}]}], "]"}], ",", 
+   RowBox[{"AxesOrigin", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0"}], "}"}]}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"ListPlot", "[", 
+  RowBox[{
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"Mean", "[", 
+          RowBox[{"Length", "/@", 
+           RowBox[{"clustera3ARC", "[", "x", "]"}]}], "]"}], ")"}], "*", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"Length", "@", 
+           RowBox[{"clustera3ARC", "[", "x", "]"}]}], ")"}], "/", 
+         "294."}]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", "1.", ",", "300.", ",", "1"}], "}"}]}], "]"}], ",", 
+   RowBox[{"AxesOrigin", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", "0"}], "}"}]}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.5295677650641403`*^9, 3.529567765398302*^9}, {
+  3.529568011463574*^9, 3.529568019560924*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"cutoff", "=", "82."}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Flatten", "@", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"With", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"clustersample", "=", "kkk"}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Select", "[", 
+        RowBox[{
+         RowBox[{"Flatten", "[", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"Reap", "[", 
+             RowBox[{"For", "[", 
+              RowBox[{
+               RowBox[{"k", "=", "1"}], ",", 
+               RowBox[{"k", "<", "kk"}], ",", 
+               RowBox[{"k", "++"}], ",", 
+               RowBox[{
+                RowBox[{"temp1", "=", 
+                 RowBox[{"Apply", "[", 
+                  RowBox[{"Dot", ",", 
+                   RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"d3ARCdata", "[", 
+                    RowBox[{"[", 
+                    RowBox[{
+                    RowBox[{"clustera3ARC", "[", "cutoff", "]"}], "[", 
+                    RowBox[{"[", "clustersample", "]"}], "]"}], "]"}], "]"}], 
+                    "\[LeftDoubleBracket]", "k", "\[RightDoubleBracket]"}], 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"d3ARCdata", "[", 
+                    RowBox[{"[", 
+                    RowBox[{
+                    RowBox[{"clustera3ARC", "[", "cutoff", "]"}], "[", 
+                    RowBox[{"[", "clustersample", "]"}], "]"}], "]"}], "]"}], 
+                    "\[LeftDoubleBracket]", "kk", "\[RightDoubleBracket]"}]}],
+                     "}"}]}], "]"}]}], ";", 
+                RowBox[{"Sow", "[", "temp1", "]"}]}]}], "]"}], "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"kk", ",", "2", ",", 
+              RowBox[{"Length", "@", 
+               RowBox[{
+                RowBox[{"clustera3ARC", "[", "cutoff", "]"}], "[", 
+                RowBox[{"[", "clustersample", "]"}], "]"}]}], ",", "1"}], 
+             "}"}]}], "]"}], "]"}], ",", "NumericQ"}], "]"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"kkk", ",", "1", ",", "26"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Histogram", "[", 
+   RowBox[{"%", ",", "100"}], "]"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cutoff", "=", "82."}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Show", "@", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"With", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"clustersample", "=", "kkk"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"temp2", "=", 
+          RowBox[{"Select", "[", 
+           RowBox[{
+            RowBox[{"Flatten", "[", 
+             RowBox[{"Table", "[", 
+              RowBox[{
+               RowBox[{"Reap", "[", 
+                RowBox[{"For", "[", 
+                 RowBox[{
+                  RowBox[{"k", "=", "1"}], ",", 
+                  RowBox[{"k", "<", "kk"}], ",", 
+                  RowBox[{"k", "++"}], ",", 
+                  RowBox[{
+                   RowBox[{"temp1", "=", 
+                    RowBox[{"Apply", "[", 
+                    RowBox[{"Dot", ",", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"d3ARCdata", "[", 
+                    RowBox[{"[", 
+                    RowBox[{
+                    RowBox[{"clustera3ARC", "[", "cutoff", "]"}], "[", 
+                    RowBox[{"[", "clustersample", "]"}], "]"}], "]"}], "]"}], 
+                    "\[LeftDoubleBracket]", "k", "\[RightDoubleBracket]"}], 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"d3ARCdata", "[", 
+                    RowBox[{"[", 
+                    RowBox[{
+                    RowBox[{"clustera3ARC", "[", "cutoff", "]"}], "[", 
+                    RowBox[{"[", "clustersample", "]"}], "]"}], "]"}], "]"}], 
+                    "\[LeftDoubleBracket]", "kk", "\[RightDoubleBracket]"}]}],
+                     "}"}]}], "]"}]}], ";", 
+                   RowBox[{"Sow", "[", "temp1", "]"}]}]}], "]"}], "]"}], ",", 
+               
+               RowBox[{"{", 
+                RowBox[{"kk", ",", "2", ",", 
+                 RowBox[{"Length", "@", 
+                  RowBox[{
+                   RowBox[{"clustera3ARC", "[", "cutoff", "]"}], "[", 
+                   RowBox[{"[", "clustersample", "]"}], "]"}]}], ",", "1"}], 
+                "}"}]}], "]"}], "]"}], ",", "NumericQ"}], "]"}]}], ";"}]}], 
+       "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Histogram", "[", 
+       RowBox[{
+        RowBox[{"Style", "[", 
+         RowBox[{"temp2", ",", 
+          RowBox[{"Hue", "[", 
+           RowBox[{"kkk", "/", "10"}], "]"}]}], "]"}], ",", "20"}], "]"}]}], 
+     ",", 
+     RowBox[{"{", 
+      RowBox[{"kkk", ",", "1", ",", "2"}], "}"}]}], "]"}]}], "\n"}], "\n", 
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"Variance", "@", 
+     RowBox[{
+      RowBox[{"d3ARCdata", "[", 
+       RowBox[{"[", 
+        RowBox[{
+         RowBox[{"clustera3ARC", "[", "82.", "]"}], "[", 
+         RowBox[{"[", "x", "]"}], "]"}], "]"}], "]"}], "[", 
+      RowBox[{"[", 
+       RowBox[{"All", ",", "3"}], "]"}], "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{"x", ",", "1", ",", 
+      RowBox[{"Length", "@", 
+       RowBox[{"clustera3ARC", "[", "82.", "]"}]}], ",", "1"}], "}"}]}], 
+   "]"}], "]"}]}], "Code",
+ CellChangeTimes->{{3.5295680724106703`*^9, 3.529568093527871*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ds3z1RWT", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg1RWTdata", ",", "d1RWTdata", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ds3z3LW5", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg3LW5data", ",", "d3LW5data", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ds3z3PCQ", "=", 
+   RowBox[{"ParallelTable", "[", 
+    RowBox[{
+     RowBox[{"ds3", "[", 
+      RowBox[{"mg3PCQdata", ",", "d3PCQdata", ",", "k"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ds3z3ARC", "=", 
+    RowBox[{"ParallelTable", "[", 
+     RowBox[{
+      RowBox[{"ds3", "[", 
+       RowBox[{"mg3ARCdata", ",", "d3ARCdata", ",", "k"}], "]"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"k", ",", "1.", ",", "300.", ",", "1."}], "}"}]}], "]"}]}], 
+   ";"}], " ", 
+  RowBox[{
+  "(*", " ", "\:5047\:7684", " ", "*)"}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.523972851559664*^9, 3.523972953870646*^9}, {
+  3.523973854920079*^9, 3.523973877953518*^9}}]
+}, Open  ]]
+},
+WindowSize->{1280, 712},
+WindowMargins->{{-1778, Automatic}, {Automatic, 5}},
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (November 6, \
+2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 164, 3, 67, "Section"],
+Cell[746, 27, 471, 7, 87, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1254, 39, 155, 3, 67, "Section"],
+Cell[1412, 44, 2695, 80, 133, "Input"],
+Cell[4110, 126, 2695, 80, 133, "Input"],
+Cell[CellGroupData[{
+Cell[6830, 210, 2697, 80, 133, "Input"],
+Cell[9530, 292, 77, 1, 27, "Output"]
+}, Open  ]],
+Cell[9622, 296, 4187, 124, 193, "Input"],
+Cell[13812, 422, 5633, 142, 224, "Code"],
+Cell[19448, 566, 1455, 41, 91, "Input"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
